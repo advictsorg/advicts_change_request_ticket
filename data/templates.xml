@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <data>
+        <record id="custom_impact_mail_template" model="mail.template">
+            <field name="name">Customer Impact Notification</field>
+            <field name="model_id" ref="model_change_request"/>
+            <field name="subject">New Update: {{ object.name }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear <t t-out="object.partner_id.name"/>,</p>
+                    <p>Our Process <t t-out="object.name"/> it's effect on your service</p>
+                    <ul>
+                        <li>Start Date: <t t-out="object.start_date"/></li>
+                        <li>End Date: <t t-out="object.end_date"/></li>
+                    </ul>
+                    <p>Best regards
+                    </p>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

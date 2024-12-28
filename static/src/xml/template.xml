@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="advicts_change_request_ticket.template_cr_dashboard" owl="1">
+        <section class="section tk_tender_dash">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 mt32">
+                        <h4 class="tk-primary">Change Request Statistic</h4>
+                        <hr class="border-primary"/>
+                    </div>
+                    <div class="col-md-6 align-items-stretch">
+                        <div class="row">
+                            <div class="col-md-4 mb-4 mt8 mb16" t-on-click="() => this.viewcrStatic('all')">
+                                <div class="card purple-bg p-32">
+                                    <div class="card-body purple-bg tk-card-body">
+                                        <img alt="users" width="40" src="advicts_change_request_ticket/static/src/img/tender.svg" />
+                                        <h4 class="tk-st-1"> Requests </h4>
+                                        <h6 class="tk-st-2">  <t t-esc="state.crStats['total_cr']" /> </h6>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-md-4 mb-4 mt8 mb16" t-on-click="() => this.viewcrStatic('active_cr')">
+                                <div class="card success-bg p-32">
+                                    <div class="card-body success-bg tk-card-body">
+                                        <img alt="users" width="40" src="advicts_change_request_ticket/static/src/img/tender-active.svg" />
+                                        <h4 class="tk-st-1"> Done </h4>
+                                        <h6 class="tk-st-2">  <t t-esc="state.crStats['active_cr']" /> </h6>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-4 mb-4 mt8 mb16" t-on-click="() => this.viewcrStatic('in_progress')">
+                                <div class="card danger-bg p-32">
+                                    <div class="card-body danger-bg tk-card-body">
+                                        <img alt="users" width="40" src="advicts_change_request_ticket/static/src/img/sheet.svg" />
+                                        <h4 class="tk-st-1"> In Progress </h4>
+                                        <h6 class="tk-st-2">  <t t-esc="state.crStats['cr_in_process']"/> </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt32">
+                        <div class="col-md-12">
+                            <h4 class="tk-center-primary">Change Request Timeline</h4>
+                            <hr class="border-primary"/>
+                        </div>
+                        <div class="tk-os-chart" t-ref="crTimeline"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </t>
+</templates>

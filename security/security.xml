@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cr_approval_category" model="ir.module.category">
+        <field name="name">Change Request Approval</field>
+        <field name="description">Category for Tender Approval</field>
+    </record>
+    <record id="cr_noc_group" model="res.groups">
+        <field name="name">CR NOC Group</field>
+        <field name="category_id" ref="cr_approval_category"/>
+    </record>
+    <record id="cr_t3_approval_group" model="res.groups">
+        <field name="name">T3 Approval Group</field>
+        <field name="category_id" ref="cr_approval_category"/>
+    </record>
+    <record id="cr_technical_approval_group" model="res.groups">
+        <field name="name">Technical Approval Group</field>
+        <field name="category_id" ref="cr_approval_category"/>
+    </record>
+
+</odoo>

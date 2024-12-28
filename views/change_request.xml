@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="change_request_view_form" model="ir.ui.view">
+            <field name="name">change.request.view.form</field>
+            <field name="model">change.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!--                        <field name="confirm_bid" invisible="1"/>-->
+                        <field name="is_site_specific" invisible="1"/>
+                        <field name="is_customer_notify" invisible="1"/>
+                        <!--                        <field name="is_manager_approval_button" invisible="1"/>-->
+                        <!--                        <field name="is_dep_manager_approval_button" invisible="1"/>-->
+                        <!--                        <field name="is_tr_manager_approval_button" invisible="1"/>-->
+
+                        <field name="stage" widget="statusbar"
+                               statusbar_visible="draft,operation_process,service_recovery,review,done"/>
+
+                        <button name="submit" type="object" string="Submit"
+                                invisible="stage != 'draft'" class="btn btn-primary"/>
+
+                        <button name="approve_t3" type="object" string="Approve"
+                                invisible="stage != 'waiting_t3_approval'"
+                                groups="advicts_change_request_ticket.cr_t3_approval_group" class="btn btn-primary"/>
+
+                        <button name="approve_technical" type="object" string="Approve"
+                                invisible="stage != 'waiting_technical_approval'"
+                                groups="advicts_change_request_ticket.cr_technical_approval_group"
+                                class="btn btn-primary"/>
+
+                        <button name="impact_analyzing" type="object" string="Impact"
+                                invisible="stage != 'submit_noc'" groups="advicts_change_request_ticket.cr_noc_group"
+                                class="btn btn-primary"/>
+                        <button name="no_impact_analyzing" type="object" string="No Impact"
+                                invisible="stage != 'submit_noc'" groups="advicts_change_request_ticket.cr_noc_group"
+                                class="btn btn-primary"/>
+
+                        <button name="send_to_noc_decision" type="object" string="Make Decision"
+                                invisible="stage not in ['impact_analyzing','reschedule']"
+                                groups="advicts_change_request_ticket.cr_noc_group" class="btn btn-primary"/>
+
+                        <button name="noc_approve" type="object" string="Approve"
+                                invisible="stage != 'noc_decision'" groups="advicts_change_request_ticket.cr_noc_group"
+                                class="btn btn-primary"/>
+                        <button name="reschedule_with_reason" type="object" string="Reschedule with Reason"
+                                invisible="stage != 'noc_decision'" groups="advicts_change_request_ticket.cr_noc_group"
+                                class="btn btn-secondary"/>
+                        <button name="reject_with_reason" type="object" string="Reject with Reason"
+                                invisible="stage != 'noc_decision'" groups="advicts_change_request_ticket.cr_noc_group"
+                                class="btn btn-danger"/>
+
+                        <button name="customer_impact" type="object" string="Customer Impact"
+                                invisible="stage != 'customer_impact'" class="btn btn-danger"/>
+
+<!--                        <button name="customerNotification" type="object" string="Notify Customer"-->
+<!--                                invisible="stage != 'customer_impact' or is_customer_notify" class="btn btn-primary"/>-->
+
+                        <button name="no_customer_impact" type="object" string="No Customer Impact"
+                                invisible="stage != 'customer_impact'" class="btn btn-primary"/>
+
+                        <button name="customer_confirm" type="object" string="Customer Confirm"
+                                invisible="stage != 'customer_confirmation'" class="btn btn-primary"/>
+                        <button name="customer_reject" type="object" string="Customer Reject"
+                                invisible="stage != 'customer_confirmation'" class="btn btn-danger"/>
+
+                        <button name="access_required" type="object" string="Confirm"
+                                invisible="stage != 'access_status'" class="btn btn-primary"
+                                confirm='Make Sure You Select Status of Access (Need Access, Access Permission Granted)'
+                        />
+
+                        <button name="complete_by_operation" type="object" string="Complete"
+                                invisible="stage != 'operation_process'" class="btn btn-primary"
+                        />
+                        <button name="reschedule_by_operation" type="object" string="Reschedule"
+                                invisible="stage != 'operation_process'" class="btn btn-secondary"
+                        />
+
+                        <button name="confirm_service_recovery" type="object" string="Confirm"
+                                invisible="stage != 'service_recovery'" class="btn btn-primary"
+                        />
+                        <button name="approve_involved_parties_recovery" type="object"
+                                string="Involved parties recovery Confirm"
+                                invisible="stage != 'involved_parties_recovery'" class="btn btn-primary"
+                        />
+
+                        <button name="done" type="object" string="Done"
+                                invisible="stage != 'review'" class="btn btn-primary"
+                        />
+
+                    </header>
+                    <sheet>
+
+                        <div class="oe_button_box" name="button_box">
+                            <!--                            <button class="oe_stat_button" type="object" name="action_view_all_bid"-->
+                            <!--                                    icon="fa-folder">-->
+                            <!--                                <field name="bid_count" string='Bids' widget="statinfo"/>-->
+                            <!--                            </button>-->
+                            <button name="action_view_tickets" type="object" class="oe_stat_button"
+                                    icon="fa-ticket">
+                                <field name="ticket_count" widget="statinfo" string="Tickets"/>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" title="Done" bg_color="text-bg-success"
+                                invisible="stage != 'done'"/>
+                        <widget name="web_ribbon" title="Done" bg_color="text-bg-danger"
+                                invisible="stage != 'reject'"/>
+                        <widget name="web_ribbon" title="Done" bg_color="text-bg-info"
+                                invisible="stage != 'cancel'"/>
+
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <div class="oe_title">
+                            <span class="o_form_label">CR Name</span>
+                            <h1>
+                                <field name="subject" placeholder="Maintain Service"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="create_uid" widget="many2one_avatar_user" readonly="1"/>
+                                <field name="partner_id" widget="many2many_tags"/>
+                                <field name="severity" widget="priority"/>
+                                <field name="start_date" required="1"/>
+                                <field name="end_date" required="1"/>
+                                <field name="classification"/>
+                                <field name="user_ids" widget="many2many_tags"/>
+                                <field name="team_ids" />
+                            </group>
+                            <group>
+                                <field name="work_location" required="1"/>
+                                <span class="o_form_label o_td_label" invisible="not is_site_specific"
+                                      name="address_name">
+                                    <b>Location</b>
+                                </span>
+                                <div class="o_address_format" invisible="not is_site_specific">
+                                    <field name="street" placeholder="Street..."
+                                           class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..."
+                                           class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state"
+                                           placeholder="State"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country"
+                                           class="o_address_country"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="service_impact"/>
+                                <field name="service_impact_details"/>
+                                <field name="customer_impact_status" readonly="1"/>
+                                <field name="customer_confirmation_status" readonly="1"/>
+
+                            </group>
+                            <group>
+                                <field name="summary_desc"/>
+                                <field name="details"/>
+                                <field name="need_access"/>
+                                <field name="access_permission_granted"/>
+                                <field name="access_details"/>
+                                <field name="reason_short_notice"/>
+                                <field name="reason_operating_hour"/>
+                                <field name="reason_holiday"/>
+                                <field name="reason_work_hours"/>
+                                <field name="reject_reason"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Impact List" name="impact_list">
+                                <field name="cr_impact_lines" readonly="stage != 'impact_analyzing'">
+                                    <tree editable="bottom">
+                                        <field name="name" required="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Evaluation List" name="impact_list"
+                                  invisible="stage not in ['service_recovery','involved_parties_recovery','review','cancel','done']">
+                                <field name="cr_evaluation_lines">
+                                    <tree editable="bottom">
+                                        <field name="name" required="1"/>
+                                        <field name="desc"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Description" name="desc">
+                                <field name="desc" placeholder="CR Details"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="change_request_view_kanban" model="ir.ui.view">
+            <field name="name">change.request.view.kanban</field>
+            <field name="model">change.request</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban" default_order="stage" records_draggable="false"
+                        sample="1">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="stage"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="is_site_specific"/>
+                    <field name="street"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="zip"/>
+                    <field name="country_id"/>
+                    <field name="activity_ids"/>
+                    <field name="create_uid"/>
+                    <field name="responsible_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click"
+                                 style="margin:8px;padding:0px;height:auto;min-height:208px !important;">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-5" style="width:110px;">
+                                            <div class="text-bg-primary"
+                                                 style="text-align:center;vertical-align:middle;font-size:12px;margin-bottom:3px;padding:5px;">
+                                                CR Start Date
+                                                <br/>
+                                                <div
+                                                        t-esc="luxon.DateTime.fromISO(record.start_date.raw_value).toFormat('d')"
+                                                        class="o_event_fontsize_20"
+                                                        style="font-size:25px;"/>
+                                                <div>
+                                                    <t
+                                                            t-esc="luxon.DateTime.fromISO(record.start_date.raw_value).toFormat('MMM yyyy')"/>
+                                                </div>
+                                            </div>
+                                            <div class="text-bg-primary"
+                                                 style="text-align:center;vertical-align:middle;font-size:12px;padding:5px;">
+                                                CR End Date
+                                                <br/>
+                                                <div
+                                                        t-esc="luxon.DateTime.fromISO(record.end_date.raw_value).toFormat('d')"
+                                                        class="o_event_fontsize_20"
+                                                        style="font-size:25px;"/>
+                                                <div>
+                                                    <t
+                                                            t-esc="luxon.DateTime.fromISO(record.end_date.raw_value).toFormat('MMM yyyy')"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-7" style="padding-left:0px;">
+                                            <strong>
+                                                <field name="name" class="text-primary"
+                                                       style="font-size: 16px;"/>
+                                            </strong>
+                                            <hr style="margin-top:2px;margin-bottom:2px;"/>
+                                            <strong>
+                                                <field name="subject"
+                                                       style="font-size: 15px;"/>
+                                            </strong>
+                                            <hr style="margin-top:2px;margin-bottom:2px;"/>
+                                            <strong>
+                                                CR Start :
+                                            </strong>
+                                            <field name="start_date"/>
+                                            <br/>
+                                            <strong>
+                                                CR End :
+                                            </strong>
+                                            <field name="end_date"/>
+                                            <t t-if="record.is_site_specific.raw_value">
+                                                <br/>
+                                                <i class="fa fa-map-marker mt-1 me-1"
+                                                   title="Location"/>
+                                                <span>
+                                                    <field name="street"/>
+                                                    <br/>
+                                                    <field name="city"/>
+                                                    -
+                                                    <field name="zip"/>
+                                                    <br/>
+                                                    <field
+                                                            name="state_id"/>
+                                                    ,
+                                                    <field
+                                                            name="country_id"/>
+                                                </span>
+                                            </t>
+                                            <hr style="margin-top:2px;margin-bottom:2px;"/>
+                                            <!--                                            <div>-->
+                                            <!--                                                <field name="stage" widget="badge"-->
+                                            <!--                                                       decoration-success="stage in ('close','confirm')"-->
+                                            <!--                                                       decoration-danger="stage == 'cancel'"-->
+                                            <!--                                                       decoration-info="stage == 'bid_submission'"-->
+                                            <!--                                                       decoration-warning="stage == 'bid_evaluation'"-->
+                                            <!--                                                       decoration-primary="stage == 'bid_selection'"/>-->
+                                            <!--                                            </div>-->
+                                            <hr style="margin-top:2px;margin-bottom:2px;"/>
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left">
+                                                    <field name="activity_ids"
+                                                           widget="kanban_activity"/>
+                                                    Schedule
+                                                    Activity
+                                                </div>
+                                                <div class="oe_kanban_bottom_right">
+                                                    <field name="create_uid"
+                                                           widget="many2one_avatar_user"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="change_request_view_tree" model="ir.ui.view">
+            <field name="name">change.request.view.tree</field>
+            <field name="model">change.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="subject"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <!--                    <field name="stage" widget="badge"-->
+                    <!--                           decoration-success="stage in ('close','confirm')"-->
+                    <!--                           decoration-danger="stage == 'cancel'"-->
+                    <!--                           decoration-info="stage == 'bid_submission'"-->
+                    <!--                           decoration-warning="stage == 'bid_evaluation'"-->
+                    <!--                           decoration-primary="stage == 'bid_selection'"/>-->
+                </tree>
+            </field>
+        </record>
+        <record id="change_request_view_calendar" model="ir.ui.view">
+            <field name="name">change.request.view.calendar</field>
+            <field name="model">change.request</field>
+            <field name="arch" type="xml">
+                <calendar string="Change Request" date_start="start_date" date_stop="end_date" color="stage"
+                          mode="month"
+                          quick_create="False"
+                          hide_time="True" event_open_popup="True">
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="stage" filters="1"/>
+                    <field name="create_uid" filters="1"/>
+                </calendar>
+            </field>
+        </record>
+        <record id="change_request_view_search" model="ir.ui.view">
+            <field name="name">change.request.view.search</field>
+            <field name="model">change.request</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Name"/>
+                    <field name="subject" string="Request Name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <filter string="Sight Specific" name="is_site_specific"
+                            domain="[('is_site_specific', '=', True)]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Stage" name="group_by_tender_type"
+                                context="{'group_by': 'stage'}"/>
+                        <separator/>
+                        <filter string="Start Date" name="group_by_start"
+                                context="{'group_by': 'start_date'}"/>
+                        <filter string="End Date" name="group_by_end"
+                                context="{'group_by': 'end_date'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="stage" string="Stage" enable_counters="1" icon="fa-filter"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+        <record id="change_request_action" model="ir.actions.act_window">
+            <field name="name">Change Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">change.request</field>
+            <field name="view_mode">kanban,tree,form,calendar,activity</field>
+        </record>
+    </data>
+</odoo>

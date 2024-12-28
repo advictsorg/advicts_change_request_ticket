@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="cr_classification_view_tree" model="ir.ui.view">
+            <field name="name">cr.classification.view.tree</field>
+            <field name="model">cr.classification</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="1"/>
+                    <field name="desc"/>
+                </tree>
+            </field>
+        </record>
+        <record id="cr_classification_action" model="ir.actions.act_window">
+            <field name="name">CR Classification</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cr.classification</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <record id="res_config_settings_view_form_cr" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.cr</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app data-string="cr" string="Change Request" name="advicts_change_request_ticket">
+                        <h2>
+                            Change Request Management
+                        </h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Change Request Hours Limit</span>
+                                    <div class="text-muted">
+                                        The time period allowed between the creation of a CR and the start date of the
+                                        CR process.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="cr_hours" class="col-lg-3 o_light_label"/>
+                                            <field name="cr_hours" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Change Request Time Limit</span>
+                                    <div class="text-muted">
+                                        The time period allowed (From-To) of the start date of the CR process.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="start_time" class="col-lg-3 o_light_label"/>
+                                            <field name="start_time" widget="float_time" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="end_time" class="col-lg-3 o_light_label"/>
+                                            <field name="end_time" widget="float_time" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Create Time Limit</span>
+                                    <div class="text-muted">
+                                        The time period allowed (From-To) of the Create Date of the CR process.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="create_start_time" class="col-lg-3 o_light_label"/>
+                                            <field name="create_start_time" widget="float_time" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="create_end_time" class="col-lg-3 o_light_label"/>
+                                            <field name="create_end_time" widget="float_time" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_cr_configuration" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'advicts_change_request_ticket'}</field>
+        </record>
+    </data>
+</odoo>

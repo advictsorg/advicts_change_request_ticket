@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Root Menu-->
+        <menuitem name="CR Management" id="menu_cr_root" sequence="0"
+                  web_icon="advicts_change_request_ticket,static/description/icon.png"/>
+
+        <menuitem id="menu_cr_dashboard" name="Dashboard" sequence="0" action="action_cr_dashboard"
+                  parent="menu_cr_root"/>
+
+        <menuitem id="menu_change_request" name="Change Requests" parent="menu_cr_root"
+                  sequence="1" action="change_request_action"/>
+
+        <menuitem id="config_change_request" name="Configuration" parent="menu_cr_root"
+                  sequence="1000"/>
+
+        <menuitem id="menu_config_cr" name="Settings" parent="config_change_request"
+                  sequence="1" action="action_cr_configuration"
+                  groups="base.group_system"/>
+        <menuitem id="menu_classification_cr" name="Classification" parent="config_change_request"
+                  sequence="1" action="cr_classification_action"/>
+
+    </data>
+</odoo>

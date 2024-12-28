@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+advicts_change_request_ticket.access_change_request,access_change_request,advicts_change_request_ticket.model_change_request,base.group_user,1,1,1,1
+
+advicts_change_request_ticket.access_cr_classification,access_cr_classification,advicts_change_request_ticket.model_cr_classification,base.group_user,1,1,1,1
+advicts_change_request_ticket.access_cr_impact_line,access_cr_impact_line,advicts_change_request_ticket.model_cr_impact_line,base.group_user,1,1,1,1
+advicts_change_request_ticket.access_cr_evaluation_line,access_cr_evaluation_line,advicts_change_request_ticket.model_cr_evaluation_line,base.group_user,1,1,1,1
+access_cr_save_reason,access_cr_save_reason,advicts_change_request_ticket.model_cr_save_reason,base.group_user,1,1,1,1
